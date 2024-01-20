@@ -10,7 +10,7 @@ if (!class_exists('BVInfo')) :
 		public $badgeinfo = 'bvbadge';
 		public $ip_header_option = 'bvipheader';
 		public $brand_option = 'bv_whitelabel_infos';
-		public $version = '5.42';
+		public $version = '5.45';
 		public $webpage = 'https://blogvault.net';
 		public $appurl = 'https://app.blogvault.net';
 		public $slug = 'blogvault-real-time-backup/blogvault.php';
@@ -52,6 +52,24 @@ if (!class_exists('BVInfo')) :
 						return end($update_versions);
 					}
 				}
+			}
+
+			return false;
+		}
+
+		public function getLatestElementorDBVersion($file) {
+			if (defined('ELEMENTOR_PATH') && file_exists(ELEMENTOR_PATH . 'core/upgrade/manager.php')) {
+				include_once ELEMENTOR_PATH . 'core/upgrade/manager.php';
+
+				if ($file === 'elementor-pro/elementor-pro.php') {
+					$managerClass = '\ElementorPro\Core\Upgrade\Manager';
+				} else {
+					$managerClass = '\Elementor\Core\Upgrade\Manager';
+				}
+
+				$manager = new $managerClass();
+
+				return $manager->get_new_version();
 			}
 
 			return false;
