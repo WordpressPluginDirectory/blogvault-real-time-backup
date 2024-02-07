@@ -1,8 +1,8 @@
 <?php
 if (!defined('ABSPATH') && !defined('MCDATAPATH')) exit;
 
-if (!class_exists('BVProtectRuleError_V545')) :
-class BVProtectRuleError_V545 extends Exception {
+if (!class_exists('BVProtectRuleError_V547')) :
+class BVProtectRuleError_V547 extends Exception {
 //Root rule error class.
 }
 endif;

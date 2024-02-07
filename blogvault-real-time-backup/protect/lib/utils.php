@@ -1,8 +1,8 @@
 <?php
 if (!defined('ABSPATH') && !defined('MCDATAPATH')) exit;
 
-if (!class_exists('BVProtectUtils_V545')) :
-class BVProtectUtils_V545 {
+if (!class_exists('BVProtectUtils_V547')) :
+class BVProtectUtils_V547 {
 	public static function getIP($ip_header) {
 		$ip = null;
 
@@ -126,7 +126,7 @@ class BVProtectUtils_V545 {
 			foreach ($objects as $object) {
 				if ($object != "." && $object != "..") {
 					if (is_dir($dir . "/" . $object) && !is_link($dir . "/" . $object)) {
-						BVProtectUtils_V545::rrmdir($dir . "/" . $object);
+						BVProtectUtils_V547::rrmdir($dir . "/" . $object);
 					} else {
 						unlink($dir . "/" . $object);
 					}
@@ -141,7 +141,7 @@ class BVProtectUtils_V545 {
 
 		if (is_array($val)) {
 			foreach ($val as $e) {
-				$length += BVProtectUtils_V545::getLength($e);
+				$length += BVProtectUtils_V547::getLength($e);
 			}
 
 			return $length;
