@@ -10,7 +10,7 @@ if (!class_exists('BVInfo')) :
 		public $badgeinfo = 'bvbadge';
 		public $ip_header_option = 'bvipheader';
 		public $brand_option = 'bv_whitelabel_infos';
-		public $version = '5.47';
+		public $version = '5.53';
 		public $webpage = 'https://blogvault.net';
 		public $appurl = 'https://app.blogvault.net';
 		public $slug = 'blogvault-real-time-backup/blogvault.php';
@@ -55,6 +55,18 @@ if (!class_exists('BVInfo')) :
 			}
 
 			return false;
+		}
+
+		public function getConnectionKey() {
+			require_once dirname( __FILE__ ) . '/recover.php';
+			$bvsiteinfo = new BVWPSiteInfo();
+			return base64_encode(BVRecover::defaultSecret($this->settings).":".$bvsiteinfo->siteurl());
+		}
+
+		public function getDefaultSecret() {
+			require_once dirname( __FILE__ ) . '/recover.php';
+			$bvsiteinfo = new BVWPSiteInfo();
+			return BVRecover::defaultSecret($this->settings);
 		}
 
 		public function getLatestElementorDBVersion($file) {

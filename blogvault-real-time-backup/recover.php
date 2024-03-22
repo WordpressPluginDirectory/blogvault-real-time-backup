@@ -7,9 +7,14 @@ if (!class_exists('BVRecover')) :
 		public static function defaultSecret($settings) {
 			$secret = self::getDefaultSecret($settings);
 			if (empty($secret)) {
-				$secret = BVAccount::randString(32);
-				self::updateDefaultSecret($settings, $secret);
+				$secret = BVRecover::refreshDefaultSecret($settings);
 			}
+			return $secret;
+		}
+
+		public static function refreshDefaultSecret($settings) {
+			$secret = BVAccount::randString(32);
+			self::updateDefaultSecret($settings, $secret);
 			return $secret;
 		}
 
