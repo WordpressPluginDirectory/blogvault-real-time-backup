@@ -1,8 +1,8 @@
 <?php
 if (!defined('ABSPATH') && !defined('MCDATAPATH')) exit;
 
-if (!class_exists('BVProtectRequest_V553')) :
-class BVProtectRequest_V553 {
+if (!class_exists('BVProtectRequest_V556')) :
+class BVProtectRequest_V556 {
 	public $ip;
 	public $host = '';
 	public $uri;
@@ -18,8 +18,8 @@ class BVProtectRequest_V553 {
 	public $raw_body = '';
 	public $files;
 	public $respcode;
-	public $status = BVProtectRequest_V553::STATUS_ALLOWED;
-	public $category = BVProtectRequest_V553::CATEGORY_NORMAL;
+	public $status = BVProtectRequest_V556::STATUS_ALLOWED;
+	public $category = BVProtectRequest_V556::CATEGORY_NORMAL;
 
 	public $wp_user;
 
@@ -45,7 +45,7 @@ class BVProtectRequest_V553 {
 	const CATEGORY_GLOBAL_BOT_BLOCKED = 90;
 
 	public function __construct($ip_header, $config) {
-		$this->ip = BVProtectUtils_V553::getIP($ip_header);
+		$this->ip = BVProtectUtils_V556::getIP($ip_header);
 		$this->timestamp = time();
 		$this->get_params = $_GET;
 		$this->cookies = $_COOKIE;
@@ -118,7 +118,7 @@ class BVProtectRequest_V553 {
 
 		if ($this->can_decode_json) {
 			if ($this->getContentType() === "application/json" && !empty($this->raw_body)) {
-				$_json_params = BVProtectUtils_V553::safeDecodeJSON($this->raw_body,
+				$_json_params = BVProtectUtils_V556::safeDecodeJSON($this->raw_body,
 						true, $this->max_json_decode_depth);
 				if (isset($_json_params)) {
 					$this->json_params['JSON'] = $_json_params;
@@ -129,15 +129,15 @@ class BVProtectRequest_V553 {
 
 	public static function blacklistedCategories() {
 		return array(
-			BVProtectRequest_V553::CATEGORY_BOT_BLOCKED,
-			BVProtectRequest_V553::CATEGORY_COUNTRY_BLOCKED,
-			BVProtectRequest_V553::CATEGORY_USER_BLACKLISTED,
-			BVProtectRequest_V553::CATEGORY_GLOBAL_BOT_BLOCKED
+			BVProtectRequest_V556::CATEGORY_BOT_BLOCKED,
+			BVProtectRequest_V556::CATEGORY_COUNTRY_BLOCKED,
+			BVProtectRequest_V556::CATEGORY_USER_BLACKLISTED,
+			BVProtectRequest_V556::CATEGORY_GLOBAL_BOT_BLOCKED
 		);
 	}
 
 	public static function whitelistedCategories() {
-		return array(BVProtectRequest_V553::CATEGORY_WHITELISTED);
+		return array(BVProtectRequest_V556::CATEGORY_WHITELISTED);
 	}
 
 	public function setRespCode($code) {

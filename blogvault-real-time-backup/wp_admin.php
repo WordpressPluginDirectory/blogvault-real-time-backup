@@ -52,7 +52,9 @@ class BVWPAdmin {
 		if ($this->bvinfo->isActivateRedirectSet()) {
 			$this->settings->updateOption($this->bvinfo->plug_redirect, 'no');
 			##ACTIVATEREDIRECTCODE##
-			wp_redirect($this->mainUrl());
+			if (!wp_doing_ajax()) {
+				wp_redirect($this->mainUrl());
+			}
 		}
 	}
 

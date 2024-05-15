@@ -1,8 +1,8 @@
 <?php
 if (!defined('ABSPATH') && !defined('MCDATAPATH')) exit;
 
-if (!class_exists('BVProtectLoggerDB_V553')) :
-class BVProtectLoggerDB_V553 {
+if (!class_exists('BVProtectLoggerDB_V556')) :
+class BVProtectLoggerDB_V556 {
 	private $tablename;
 	private $bv_tablename;
 
@@ -10,16 +10,16 @@ class BVProtectLoggerDB_V553 {
 
 	function __construct($tablename) {
 		$this->tablename = $tablename;
-		$this->bv_tablename = BVProtect_V553::$db->getBVTable($tablename);
+		$this->bv_tablename = BVProtect_V556::$db->getBVTable($tablename);
 	}
 
 	public function log($data) {
 		if (is_array($data)) {
-			if (BVProtect_V553::$db->rowsCount($this->bv_tablename) > BVProtectLoggerDB_V553::MAXROWCOUNT) {
-				BVProtect_V553::$db->deleteRowsFromtable($this->tablename, 1);
+			if (BVProtect_V556::$db->rowsCount($this->bv_tablename) > BVProtectLoggerDB_V556::MAXROWCOUNT) {
+				BVProtect_V556::$db->deleteRowsFromtable($this->tablename, 1);
 			}
 
-			BVProtect_V553::$db->replaceIntoBVTable($this->tablename, $data);
+			BVProtect_V556::$db->replaceIntoBVTable($this->tablename, $data);
 		}
 	}
 }
