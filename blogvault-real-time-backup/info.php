@@ -10,7 +10,7 @@ if (!class_exists('BVInfo')) :
 		public $badgeinfo = 'bvbadge';
 		public $ip_header_option = 'bvipheader';
 		public $brand_option = 'bv_whitelabel_infos';
-		public $version = '5.56';
+		public $version = '5.68';
 		public $webpage = 'https://blogvault.net';
 		public $appurl = 'https://app.blogvault.net';
 		public $slug = 'blogvault-real-time-backup/blogvault.php';
@@ -21,7 +21,8 @@ if (!class_exists('BVInfo')) :
 		public $author = 'Backup by BlogVault';
 		public $title = 'WordPress Backup & Security Plugin - BlogVault';
 
-		const DB_VERSION = '4';
+		const DB_VERSION = '5';
+		const AL_CONF_VERSION = '1.1';
 
 		public function __construct($settings) {
 			$this->settings = $settings;
@@ -60,7 +61,10 @@ if (!class_exists('BVInfo')) :
 		public function getConnectionKey() {
 			require_once dirname( __FILE__ ) . '/recover.php';
 			$bvsiteinfo = new BVWPSiteInfo();
-			return base64_encode(BVRecover::defaultSecret($this->settings).":".$bvsiteinfo->siteurl());
+			$encoded_url = base64_encode($bvsiteinfo->siteurl());
+			$secret = BVRecover::defaultSecret($this->settings);
+
+			return base64_encode("v1:".$secret.":".$encoded_url);
 		}
 
 		public function getDefaultSecret() {

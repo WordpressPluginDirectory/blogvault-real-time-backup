@@ -1,7 +1,7 @@
 <?php
 if (!defined('ABSPATH') && !defined('MCDATAPATH')) exit;
 
-if (!class_exists('BVProtect_V556')) :
+if (!class_exists('BVProtect_V568')) :
 require_once dirname( __FILE__ ) . '/logger.php';
 require_once dirname( __FILE__ ) . '/ipstore.php';
 require_once dirname( __FILE__ ) . '/request.php';
@@ -11,7 +11,7 @@ require_once dirname( __FILE__ ) . '/fw.php';
 require_once dirname( __FILE__ ) . '/lp.php';
 require_once dirname( __FILE__ ) . '/../helper.php';
 
-class BVProtect_V556 {
+class BVProtect_V568 {
 	public static $settings;
 	public static $db;
 	public static $info;
@@ -22,13 +22,17 @@ class BVProtect_V556 {
 	const CONF_VERSION = '2';
 
 	public static function init($mode) {
-		if ($mode == BVProtect_V556::MODE_PREPEND) {
+		if (defined('WP_CLI') && WP_CLI) {
+			return false;
+		}
+
+		if ($mode == BVProtect_V568::MODE_PREPEND) {
 			$config_file = MCDATAPATH .  MCCONFKEY . '-' . 'mc.conf';
-			$config = BVProtectUtils_V556::parseFile($config_file);
+			$config = BVProtectUtils_V568::parseFile($config_file);
 
 			if (empty($config['time']) || !($config['time'] > time() - (48*3600)) ||
 					!isset($config['mc_conf_version']) ||
-					(BVProtect_V556::CONF_VERSION !== $config['mc_conf_version'])) {
+					(BVProtect_V568::CONF_VERSION !== $config['mc_conf_version'])) {
 				return false;
 
 			}
@@ -36,20 +40,15 @@ class BVProtect_V556 {
 			$brand_name = array_key_exists('brandname', $config) ? $config['brandname'] : 'Protect';
 			$request_ip_header = array_key_exists('ipheader', $config) ? $config['ipheader'] : null;
 			$req_config = array_key_exists('reqconfig', $config) ? $config['reqconfig'] : array();
-			$request = new BVProtectRequest_V556($request_ip_header, $req_config);
+			$request = new BVProtectRequest_V568($request_ip_header, $req_config);
 			$fw_config = array_key_exists('fw', $config) ? $config['fw'] : array();
 
-			BVProtectFW_V556::getInstance($mode, $request, $fw_config, $brand_name)->init();
+			BVProtectFW_V568::getInstance($mode, $request, $fw_config, $brand_name)->init();
 		} else {
-			//For backward compatibility.
-			self::$settings = new BVWPSettings();
-			self::$db = new BVWPDb();
-			self::$info = new BVInfo(self::$settings);
-
 			$plug_config = self::$settings->getOption(self::$info->services_option_name);
 			$config = array_key_exists('protect', $plug_config) ? $plug_config['protect'] : array();
 			if (!is_array($config) || !array_key_exists('mc_conf_version', $config) ||
-				(BVProtect_V556::CONF_VERSION !== $config['mc_conf_version'])) {
+					(BVProtect_V568::CONF_VERSION !== $config['mc_conf_version'])) {
 
 				return false;
 			}
@@ -57,33 +56,33 @@ class BVProtect_V556 {
 			$brand_name = self::$info->getBrandName();
 			$request_ip_header = array_key_exists('ipheader', $config) ? $config['ipheader'] : null;
 			$req_config = array_key_exists('reqconfig', $config) ? $config['reqconfig'] : array();
-			$request = new BVProtectRequest_V556($request_ip_header, $req_config);
+			$request = new BVProtectRequest_V568($request_ip_header, $req_config);
 			$fw_config = array_key_exists('fw', $config) ? $config['fw'] : array();
 			$lp_config = array_key_exists('lp', $config) ? $config['lp'] : array();
 
-			BVProtectFW_V556::getInstance($mode, $request, $fw_config, $brand_name)->init();
-			BVProtectLP_V556::getInstance($request, $lp_config, $brand_name)->init();
+			BVProtectFW_V568::getInstance($mode, $request, $fw_config, $brand_name)->init();
+			BVProtectLP_V568::getInstance($request, $lp_config, $brand_name)->init();
 		}
 	}
 
 	public static function uninstall() {
 		self::$settings->deleteOption('bvptconf');
 		self::$settings->deleteOption('bvptplug');
-		BVProtectIpstore_V556::uninstall();
-		BVProtectFW_V556::uninstall();
-		BVProtectLP_V556::uninstall();
+		BVProtectIpstore_V568::uninstall();
+		BVProtectFW_V568::uninstall();
+		BVProtectLP_V568::uninstall();
 
-		BVProtect_V556::removeWPPrepend();
-		BVProtect_V556::removePHPPrepend();
-		BVProtect_V556::removeMCData();
+		BVProtect_V568::removeWPPrepend();
+		BVProtect_V568::removePHPPrepend();
+		BVProtect_V568::removeMCData();
 
 		return true;
 	}
 
 	private static function removeWPPrepend() {
 		$wp_conf_paths = array(
-			dirname(ABSPATH) . "/wp-config.php",
-			dirname(ABSPATH) . "/../wp-config.php"
+			rtrim(ABSPATH, DIRECTORY_SEPARATOR) . "/wp-config.php",
+			rtrim(ABSPATH, DIRECTORY_SEPARATOR) . "/../wp-config.php"
 		);
 
 		if (file_exists($wp_conf_paths[0])) {
@@ -94,33 +93,33 @@ class BVProtect_V556 {
 			return;
 		}
 
-		$pattern = "@include '" . dirname(ABSPATH) . "/malcare-waf.php" . "';";
+		$pattern = "@include '" . rtrim(ABSPATH, DIRECTORY_SEPARATOR) . "/malcare-waf.php" . "';";
 		
-		BVProtectUtils_V556::fileRemovePattern($fname, $pattern);
+		BVProtectUtils_V568::fileRemovePattern($fname, $pattern);
 	}
 
 	private static function removePHPPrepend() {
-		BVProtect_V556::removeHtaccessPrepend();
-		BVProtect_V556::removeUseriniPrepend();
+		BVProtect_V568::removeHtaccessPrepend();
+		BVProtect_V568::removeUseriniPrepend();
 	}
 
 	private static function removeHtaccessPrepend() {
 		$pattern = "/# MalCare WAF(.|\n)*# END MalCare WAF/i";
 
-		BVProtectUtils_V556::fileRemovePattern(dirname(ABSPATH) . "/.htaccess", $pattern, true);
+		BVProtectUtils_V568::fileRemovePattern(rtrim(ABSPATH, DIRECTORY_SEPARATOR) . "/.htaccess", $pattern, true);
 	}
 
 	private static function removeUseriniPrepend() {
 		$pattern = "/; MalCare WAF(.|\n)*; END MalCare WAF/i";
 
-		BVProtectUtils_V556::fileRemovePattern(dirname(ABSPATH) . "/.user.ini", $pattern, true);
+		BVProtectUtils_V568::fileRemovePattern(rtrim(ABSPATH, DIRECTORY_SEPARATOR) . "/.user.ini", $pattern, true);
 	}
 
 	private static function removeMCData() {
-		$content_dir = defined('WP_CONTENT_DIR') ? WP_CONTENT_DIR : dirname(ABSPATH) . "/wp-content";
+		$content_dir = defined('WP_CONTENT_DIR') ? WP_CONTENT_DIR : rtrim(ABSPATH, DIRECTORY_SEPARATOR) . "/wp-content";
 		$mc_data_dir = $content_dir . "/mc_data";
 
-		BVProtectUtils_V556::rrmdir($mc_data_dir);
+		BVProtectUtils_V568::rrmdir($mc_data_dir);
 	}
 }
 endif;

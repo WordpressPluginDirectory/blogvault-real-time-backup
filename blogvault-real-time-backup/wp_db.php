@@ -214,6 +214,12 @@ class BVWPDb {
 		$table = $this->getBVTable($name);
 		return $wpdb->replace($table, $value);
 	}
+
+	public function insertIntoBVTable($name, $value) {
+		global $wpdb;
+		$table = $this->getBVTable($name);
+		return $wpdb->insert($table, $value);
+	}
 	
 	public function tinfo($name) {
 		$result = array();
