@@ -1,8 +1,8 @@
 <?php
 if (!defined('ABSPATH') && !defined('MCDATAPATH')) exit;
 
-if (!trait_exists('BVProtectFWRuleRequestFunc_V568')) :
-trait BVProtectFWRuleRequestFunc_V568 {
+if (!trait_exists('BVProtectFWRuleRequestFunc_V572')) :
+trait BVProtectFWRuleRequestFunc_V572 {
 	private function _rf_getAction() {
 		$args = $this->processRuleFunctionParams(
 			'getAction',
@@ -402,7 +402,7 @@ trait BVProtectFWRuleRequestFunc_V568 {
 		$user = $this->_rf_getCurrentWPUser();
 
 		if (!array_key_exists('ID', $user)) {
-			throw new BVProtectRuleError_V568(
+			throw new BVProtectRuleError_V572(
 				$this->addExState("wpUserId: user's id doesn't exist")
 			);
 		}

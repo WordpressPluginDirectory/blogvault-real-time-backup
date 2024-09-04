@@ -1,8 +1,8 @@
 <?php
 if (!defined('ABSPATH') && !defined('MCDATAPATH')) exit;
 
-if (!trait_exists('BVProtectFWRuleMiscFunc_V568')) :
-trait BVProtectFWRuleMiscFunc_V568 {
+if (!trait_exists('BVProtectFWRuleMiscFunc_V572')) :
+trait BVProtectFWRuleMiscFunc_V572 {
 	private function _rf_isTrue() {
 		$args = $this->processRuleFunctionParams(
 			'isTrue',
@@ -55,7 +55,7 @@ trait BVProtectFWRuleMiscFunc_V568 {
 		$name = $args[0];
 
 		if (!array_key_exists($name, $this->variables)) {
-			throw new BVProtectRuleError_V568(
+			throw new BVProtectRuleError_V572(
 				$this->addExState("UndefinedVariableError: " . $name . " is not defined.")
 			);
 		}
@@ -116,7 +116,7 @@ trait BVProtectFWRuleMiscFunc_V568 {
 		}
 		$resp = BVHelper::safePregMatch((string) $pattern, (string) $subject);
 		if ($resp === false) {
-			throw new BVProtectRuleError_V568(
+			throw new BVProtectRuleError_V572(
 				$this->addExState('BVHelper::safePregMatch' . serialize($subject))
 			);
 		} elseif ($resp > 0) {
@@ -157,7 +157,7 @@ trait BVProtectFWRuleMiscFunc_V568 {
 		}
 		$count = preg_match_all((string) $pattern, (string) $subject, $matches);
 		if ($count === false) {
-			throw new BVProtectRuleError_V568(
+			throw new BVProtectRuleError_V572(
 				$this->addExState("preg_match_all: " . serialize($subject))
 			);
 		}
@@ -183,7 +183,7 @@ trait BVProtectFWRuleMiscFunc_V568 {
 		}
 		$count = preg_match_all((string) $pattern, (string) $subject, $matches);
 		if ($count === false) {
-			throw new BVProtectRuleError_V568(
+			throw new BVProtectRuleError_V572(
 				$this->addExState("preg_match_all: " . serialize($subject))
 			);
 		}

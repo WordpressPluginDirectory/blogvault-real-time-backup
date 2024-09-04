@@ -1,8 +1,8 @@
 <?php
 if (!defined('ABSPATH') && !defined('MCDATAPATH')) exit;
 
-if (!class_exists('BVProtectWPUser_V568')) :
-class BVProtectWPUser_V568 {
+if (!class_exists('BVProtectWPUser_V572')) :
+class BVProtectWPUser_V572 {
 	public $id;
 	public $role;
 	public $role_level;
@@ -21,7 +21,7 @@ class BVProtectWPUser_V568 {
 
 	public static function defaultUser() {
 		$time = (int) floor(time() / 43200);
-		return (new BVProtectWPUser_V568(0, 0, array(), $time));
+		return (new BVProtectWPUser_V572(0, 0, array(), $time));
 	}
 
 	public static function _serialize($user) {
@@ -41,7 +41,7 @@ class BVProtectWPUser_V568 {
 		list($id, $role_level, $capabilities, $time) = $user_attrs;
 		$capabilities = array_map('intval', explode(',', $capabilities));
 
-		return (new BVProtectWPUser_V568((int) $id, (int) $role_level, $capabilities, (int) $time));
+		return (new BVProtectWPUser_V572((int) $id, (int) $role_level, $capabilities, (int) $time));
 	}
 
 	public function isIdentical($user) {
