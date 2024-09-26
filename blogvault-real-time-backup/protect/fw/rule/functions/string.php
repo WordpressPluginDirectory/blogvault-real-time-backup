@@ -1,8 +1,8 @@
 <?php
 if (!defined('ABSPATH') && !defined('MCDATAPATH')) exit;
 
-if (!trait_exists('BVProtectFWRuleStringFunc_V573')) :
-trait BVProtectFWRuleStringFunc_V573 {
+if (!trait_exists('BVProtectFWRuleStringFunc_V577')) :
+trait BVProtectFWRuleStringFunc_V577 {
 	private function _rf_isNumeric() {
 		$args = $this->processRuleFunctionParams(
 			'isNumeric',
@@ -237,7 +237,7 @@ trait BVProtectFWRuleStringFunc_V573 {
 				}
 			}
 		} else {
-			throw new BVProtectRuleError_V573(
+			throw new BVProtectRuleError_V577(
 				$this->addExState("containsAnySubstring: Expects an array of substrings.")
 			);
 		}
@@ -272,7 +272,7 @@ trait BVProtectFWRuleStringFunc_V573 {
 		$offset = isset($args[2]) ? $args[2] : 0;
 
 		if (!is_int($offset)) {
-			throw new BVProtectRuleError_V573(
+			throw new BVProtectRuleError_V577(
 				$this->addExState("strPos: Offset should be an integer")
 			);
 		}
@@ -317,13 +317,13 @@ trait BVProtectFWRuleStringFunc_V573 {
 		$limit = isset($args[2]) ? $args[2] : PHP_INT_MAX;
 
 		if (empty($separator)) {
-			throw new BVProtectRuleError_V573(
+			throw new BVProtectRuleError_V577(
 				$this->addExState("splitString: Separator cannot be empty")
 			);
 		}
 
 		if (!is_int($limit)) {
-			throw new BVProtectRuleError_V573(
+			throw new BVProtectRuleError_V577(
 				$this->addExState("splitString: Limit should be an integer")
 			);
 		}

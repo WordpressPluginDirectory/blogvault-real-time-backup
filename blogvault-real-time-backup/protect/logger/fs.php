@@ -1,8 +1,8 @@
 <?php
 if (!defined('ABSPATH') && !defined('MCDATAPATH')) exit;
 
-if (!class_exists('BVProtectLoggerFS_V573')) :
-class BVProtectLoggerFS_V573 {
+if (!class_exists('BVProtectLoggerFS_V577')) :
+class BVProtectLoggerFS_V577 {
 	public $logFile;
 
 	function __construct($filename) {

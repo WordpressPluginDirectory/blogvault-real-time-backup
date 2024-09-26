@@ -5,7 +5,7 @@ Plugin URI: https://blogvault.net
 Description: Easiest way to backup & secure your WordPress site
 Author: Backup by BlogVault
 Author URI: https://blogvault.net
-Version: 5.73
+Version: 5.77
 Network: True
  */
 
@@ -40,6 +40,8 @@ require_once dirname( __FILE__ ) . '/account.php';
 require_once dirname( __FILE__ ) . '/helper.php';
 require_once dirname( __FILE__ ) . '/wp_2fa/wp_2fa.php';
 
+require_once dirname( __FILE__ ) . '/wp_login_whitelabel.php';
+
 ##WPCACHEMODULE##
 
 
@@ -56,8 +58,10 @@ register_uninstall_hook(__FILE__, array('BVWPAction', 'uninstall'));
 register_activation_hook(__FILE__, array($wp_action, 'activate'));
 register_deactivation_hook(__FILE__, array($wp_action, 'deactivate'));
 
+
 add_action('wp_footer', array($wp_action, 'footerHandler'), 100);
 add_action('bv_clear_bv_services_config', array($wp_action, 'clear_bv_services_config'));
+
 ##SOADDUNINSTALLACTION##
 
 ##DISABLE_OTHER_OPTIMIZATION_PLUGINS##
@@ -77,6 +81,7 @@ if (is_admin()) {
 	}
 	add_filter('plugin_action_links', array($wpadmin, 'settingsLink'), 10, 2);
 	add_action('admin_head', array($wpadmin, 'removeAdminNotices'), 3);
+	##POPUP_ON_DEACTIVATION##
 	add_action('admin_notices', array($wpadmin, 'activateWarning'));
 	add_action('admin_enqueue_scripts', array($wpadmin, 'bvsecAdminMenu'));
 	##ALPURGECACHEFUNCTION##
@@ -190,14 +195,14 @@ if ((array_key_exists('bvplugname', $_REQUEST)) && ($_REQUEST['bvplugname'] == "
 		if ($bvinfo->isProtectModuleEnabled()) {
 			require_once dirname( __FILE__ ) . '/protect/protect.php';
 			//For backward compatibility.
-			BVProtect_V573::$settings = new BVWPSettings();
-			BVProtect_V573::$db = new BVWPDb();
-			BVProtect_V573::$info = new BVInfo(BVProtect_V573::$settings);
+			BVProtect_V577::$settings = new BVWPSettings();
+			BVProtect_V577::$db = new BVWPDb();
+			BVProtect_V577::$info = new BVInfo(BVProtect_V577::$settings);
 
-			add_action('bv_clear_pt_config', array('BVProtect_V573', 'uninstall'));
+			add_action('bv_clear_pt_config', array('BVProtect_V577', 'uninstall'));
 
 			if ($bvinfo->isActivePlugin()) {
-				BVProtect_V573::init(BVProtect_V573::MODE_WP);
+				BVProtect_V577::init(BVProtect_V577::MODE_WP);
 			}
 		}
 
@@ -236,3 +241,15 @@ if ((array_key_exists('bvplugname', $_REQUEST)) && ($_REQUEST['bvplugname'] == "
 
 	##THIRDPARTYCACHINGMODULE##
 }
+
+if (BVWP2FA::isEnabled($bvsettings)) {
+	$wp_2fa = new BVWP2FA();
+	$wp_2fa->init();
+}
+
+if (!empty($bvinfo->getLPWhitelabelInfo())) {
+	$wp_login_whitelabel = new BVWPLoginWhitelabel();
+	$wp_login_whitelabel->init();
+}
+
+add_action('bv_clear_wp_2fa_config', array($wp_action, 'clear_wp_2fa_config'));

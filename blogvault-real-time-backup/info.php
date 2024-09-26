@@ -10,7 +10,8 @@ if (!class_exists('BVInfo')) :
 		public $badgeinfo = 'bvbadge';
 		public $ip_header_option = 'bvipheader';
 		public $brand_option = 'bv_whitelabel_infos';
-		public $version = '5.73';
+		public $wp_lp_whitelabel_option = 'bvLpWhitelabelConf';
+		public $version = '5.77';
 		public $webpage = 'https://blogvault.net';
 		public $appurl = 'https://app.blogvault.net';
 		public $slug = 'blogvault-real-time-backup/blogvault.php';
@@ -135,6 +136,11 @@ if (!class_exists('BVInfo')) :
 		public function getPluginsWhitelabelInfos() {
 			$whitelabel_infos = $this->settings->getOption($this->brand_option);
 			return is_array($whitelabel_infos) ? $whitelabel_infos : array();
+		}
+
+		public function getLPWhitelabelInfo() {
+			$infos = $this->settings->getOption($this->wp_lp_whitelabel_option);
+			return is_array($infos) ? $infos : array();
 		}
 
 		public function getPluginsWhitelabelInfoByTitle() {
