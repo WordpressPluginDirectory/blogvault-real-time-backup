@@ -1,12 +1,12 @@
 === BlogVault WordPress Backup Plugin - Migration, Staging, and Backups ===
 Contributors: BlogVault Backup
-Tags: backup, wordpress backup, backup plugin, cloud backup, database backup, back up, staging, restore, s3 backup, dropbox backup, migration
+Tags: backup, staging, migration, cloud backup, clone
 Plugin URI: https://blogvault.net/
 Donate link: https://app.blogvault.net/home/signup
 Requires at least: 4.0
-Tested up to: 6.6
+Tested up to: 6.7
 Requires PHP: 5.6.0
-Stable tag: 5.77
+Stable tag: 5.85
 License: GPLv2 or later
 License URI: [http://www.gnu.org/licenses/gpl-2.0.html](http://www.gnu.org/licenses/gpl-2.0.html)
 
@@ -259,6 +259,14 @@ These are available on our website: [Terms of Service](https://blogvault.net/tos
 9. We power WordPress migration for WPEngine, Pantheon, FlyWheel, LiquidWeb, Cloudways, Savvii, and many more. Need we say more?
 
 == CHANGELOG ==
+= 5.85 =
+* New: Added Gravity Forms support in Form Testing.
+* Tweak: Code Restructuring
+
+= 5.81 =
+* Tweak: Enhanced Form Monitoring
+* Tweak: Improved Error Handling
+
 = 5.77 =
 * New: Introduced WP Login Whitelabel
 * Tweak: Enhanced Two-Factor Authentication

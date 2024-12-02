@@ -11,7 +11,7 @@ if (!class_exists('BVInfo')) :
 		public $ip_header_option = 'bvipheader';
 		public $brand_option = 'bv_whitelabel_infos';
 		public $wp_lp_whitelabel_option = 'bvLpWhitelabelConf';
-		public $version = '5.77';
+		public $version = '5.85';
 		public $webpage = 'https://blogvault.net';
 		public $appurl = 'https://app.blogvault.net';
 		public $slug = 'blogvault-real-time-backup/blogvault.php';
@@ -65,7 +65,7 @@ if (!class_exists('BVInfo')) :
 			$encoded_url = base64_encode($bvsiteinfo->siteurl());
 			$secret = BVRecover::defaultSecret($this->settings);
 
-			return base64_encode("v1:".$secret.":".$encoded_url);
+			return base64_encode("v2:".$secret.":".$encoded_url.":".$this->plugname);
 		}
 
 		public function getDefaultSecret() {
@@ -87,7 +87,7 @@ if (!class_exists('BVInfo')) :
 
 		public static function getRequestID() {
 			if (!defined("BV_REQUEST_ID")) {
-				define("BV_REQUEST_ID", uniqid(mt_rand()));
+				define("BV_REQUEST_ID", uniqid(mt_rand())); // phpcs:ignore WordPress.WP.AlternativeFunctions.rand_mt_rand
 			}
 			return BV_REQUEST_ID;
 		}
@@ -108,6 +108,7 @@ if (!class_exists('BVInfo')) :
 		}
 
 		public function canWhiteLabel($slug = NULL) {
+			// phpcs:disable WordPress.Security.NonceVerification.Recommended
 			if (array_key_exists("bv_override_global_whitelabel", $_REQUEST)) {
 				return false;
 			}
@@ -115,6 +116,7 @@ if (!class_exists('BVInfo')) :
 				$_REQUEST["bv_override_plugin_whitelabel"] === $slug) {
 				return false;
 			}
+			// phpcs:enable WordPress.Security.NonceVerification.Recommended
 			return true;
 		}
 
