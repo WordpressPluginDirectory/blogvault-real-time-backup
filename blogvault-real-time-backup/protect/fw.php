@@ -1,12 +1,12 @@
 <?php
 if (!defined('ABSPATH') && !defined('MCDATAPATH')) exit;
 
-if (!class_exists('BVProtectFW_V636')) :
+if (!class_exists('BVProtectFW_V639')) :
 require_once dirname( __FILE__ ) . '/fw/rule/errors.php';
 require_once dirname( __FILE__ ) . '/fw/rule/engine.php';
 require_once dirname( __FILE__ ) . '/fw/rule.php';
 
-class BVProtectFW_V636 {
+class BVProtectFW_V639 {
 	private $brand_name;
 	private $protect_mode;
 	private $request;
@@ -22,23 +22,23 @@ class BVProtectFW_V636 {
 	private $is_ip_checked_for_blacklisted = false;
 	private $has_valid_bypass_cookie;
 
-	private $mode = BVProtectFW_V636::MODE_DISABLED;
-	private $ip_cookie_mode = BVProtectFW_V636::IP_COOKIE_MODE_DISABLED;
-	private $admin_cookie_mode = BVProtectFW_V636::ADMIN_COOKIE_MODE_DISABLED;
-	private $bypass_level = BVProtectFW_V636::WP_USER_ROLE_LEVEL_CONTRIBUTOR;
-	private $wpf_rule_init_mode = BVProtectFW_V636::WPF_RULE_INIT_MODE_WP;
+	private $mode = BVProtectFW_V639::MODE_DISABLED;
+	private $ip_cookie_mode = BVProtectFW_V639::IP_COOKIE_MODE_DISABLED;
+	private $admin_cookie_mode = BVProtectFW_V639::ADMIN_COOKIE_MODE_DISABLED;
+	private $bypass_level = BVProtectFW_V639::WP_USER_ROLE_LEVEL_CONTRIBUTOR;
+	private $wpf_rule_init_mode = BVProtectFW_V639::WPF_RULE_INIT_MODE_WP;
 	private $custom_roles = array();
 	private $cookie_key = "";
 	private $cookie_path = "";
 	private $cookie_domain = "";
 	private $cookie_validity = 2592000;
 	private $can_set_cache_prevention_cookie = false;
-	private $rules_mode = BVProtectFW_V636::RULES_MODE_DISABLED;
+	private $rules_mode = BVProtectFW_V639::RULES_MODE_DISABLED;
 	private $is_geo_blocking = false;
 	private $is_wp_user_cookie_enabled = false;
 	private $log_config = array();
-	private $request_profiling_mode = BVProtectFW_V636::REQ_PROFILING_MODE_DISABLED;
-	private $logging_mode = BVProtectFW_V636::LOGGING_MODE_VISITOR;
+	private $request_profiling_mode = BVProtectFW_V639::REQ_PROFILING_MODE_DISABLED;
+	private $logging_mode = BVProtectFW_V639::LOGGING_MODE_VISITOR;
 	private $skip_log_config = array();
 	private $skip_log_cookies = array();
 	private $skip_log_headers = array();
@@ -53,7 +53,7 @@ class BVProtectFW_V636 {
 	private $matched_rules = array();
 	private $break_rule_matching = false;
 	private $can_log_raw_body = false;
-	private $log_slice_size = BVProtectFW_V636::LOG_SLICE_SIZE;
+	private $log_slice_size = BVProtectFW_V639::LOG_SLICE_SIZE;
 
 	private static $instance = null;
 
@@ -99,16 +99,16 @@ class BVProtectFW_V636 {
 	const LOGGING_MODE_DISABLED = 3;
 
 	const DEFAULT_WP_USER_ROLE_LEVELS = array(
-		'administrator' => BVProtectFW_V636::WP_USER_ROLE_LEVEL_ADMIN,
-		'editor'        => BVProtectFW_V636::WP_USER_ROLE_LEVEL_EDITOR,
-		'author'        => BVProtectFW_V636::WP_USER_ROLE_LEVEL_AUTHOR,
-		'contributor'   => BVProtectFW_V636::WP_USER_ROLE_LEVEL_CONTRIBUTOR,
-		'subscriber'    => BVProtectFW_V636::WP_USER_ROLE_LEVEL_SUBSCRIBER
+		'administrator' => BVProtectFW_V639::WP_USER_ROLE_LEVEL_ADMIN,
+		'editor'        => BVProtectFW_V639::WP_USER_ROLE_LEVEL_EDITOR,
+		'author'        => BVProtectFW_V639::WP_USER_ROLE_LEVEL_AUTHOR,
+		'contributor'   => BVProtectFW_V639::WP_USER_ROLE_LEVEL_CONTRIBUTOR,
+		'subscriber'    => BVProtectFW_V639::WP_USER_ROLE_LEVEL_SUBSCRIBER
 	);
 
 	const EXTRA_WP_USER_ROLE_LEVELS = array(
-		'custom'        => BVProtectFW_V636::WP_USER_ROLE_LEVEL_CUSTOM,
-		'unknown'       => BVProtectFW_V636::WP_USER_ROLE_LEVEL_UNKNOWN
+		'custom'        => BVProtectFW_V639::WP_USER_ROLE_LEVEL_CUSTOM,
+		'unknown'       => BVProtectFW_V639::WP_USER_ROLE_LEVEL_UNKNOWN
 	);
 
 	const TABLE_NAME                = "fw_requests";
@@ -247,11 +247,11 @@ class BVProtectFW_V636 {
 
 		if ($this->isPrependMode()) {
 			$log_file = MCDATAPATH . MCCONFKEY . '-mc.log';
-			$this->ipstore = new BVProtectIpstore_V636(BVProtectIpstore_V636::STORAGE_TYPE_FS);
-			$this->logger = new BVProtectLogger_V636($log_file, BVProtectLogger_V636::TYPE_FS);
+			$this->ipstore = new BVProtectIpstore_V639(BVProtectIpstore_V639::STORAGE_TYPE_FS);
+			$this->logger = new BVProtectLogger_V639($log_file, BVProtectLogger_V639::TYPE_FS);
 		} else {
-			$this->ipstore = new BVProtectIpstore_V636(BVProtectIpstore_V636::STORAGE_TYPE_DB);
-			$this->logger = new BVProtectLogger_V636(BVProtectFW_V636::TABLE_NAME, BVProtectLogger_V636::TYPE_DB);
+			$this->ipstore = new BVProtectIpstore_V639(BVProtectIpstore_V639::STORAGE_TYPE_DB);
+			$this->logger = new BVProtectLogger_V639(BVProtectFW_V639::TABLE_NAME, BVProtectLogger_V639::TYPE_DB);
 		}
 
 		if ($this->is_wp_user_cookie_enabled) {
@@ -264,10 +264,10 @@ class BVProtectFW_V636 {
 	public static function getInstance($protect_mode, $request, $config, $brand_name) {
 		if (!isset(self::$instance)) {
 			self::$instance = new self($protect_mode, $request, $config, $brand_name);
-		} elseif (self::$instance->protect_mode != $protect_mode && $protect_mode == BVProtect_V636::MODE_WP) {
+		} elseif (self::$instance->protect_mode != $protect_mode && $protect_mode == BVProtect_V639::MODE_WP) {
 			self::$instance->protect_mode = $protect_mode;
 			self::$instance->brand_name = $brand_name;
-			self::$instance->ipstore = new BVProtectIpstore_V636(BVProtectIpstore_V636::STORAGE_TYPE_DB);
+			self::$instance->ipstore = new BVProtectIpstore_V639(BVProtectIpstore_V639::STORAGE_TYPE_DB);
 			self::$instance->initRules();
 		}
 
@@ -275,7 +275,7 @@ class BVProtectFW_V636 {
 	}
 
 	public static function uninstall() {
-		BVProtect_V636::$db->dropBVTable(BVProtectFW_V636::TABLE_NAME);
+		BVProtect_V639::$db->dropBVTable(BVProtectFW_V639::TABLE_NAME);
 	}
 
 	public function init() {
@@ -295,40 +295,40 @@ class BVProtectFW_V636 {
 	}
 
 	private function isPrependMode() {
-		return ($this->protect_mode === BVProtect_V636::MODE_PREPEND);
+		return ($this->protect_mode === BVProtect_V639::MODE_PREPEND);
 	}
 
 	private function isWPMode() {
-		return ($this->protect_mode === BVProtect_V636::MODE_WP);
+		return ($this->protect_mode === BVProtect_V639::MODE_WP);
 	}
 
 	private function isModeDisabled() {
-		return ($this->mode === BVProtectFW_V636::MODE_DISABLED);
+		return ($this->mode === BVProtectFW_V639::MODE_DISABLED);
 	}
 
 	private function isModeProtect() {
-		return ($this->mode === BVProtectFW_V636::MODE_PROTECT);
+		return ($this->mode === BVProtectFW_V639::MODE_PROTECT);
 	}
 
 	private function isAdminCookieEnabled() {
-		return ($this->admin_cookie_mode === BVProtectFW_V636::ADMIN_COOKIE_MODE_ENABLED);
+		return ($this->admin_cookie_mode === BVProtectFW_V639::ADMIN_COOKIE_MODE_ENABLED);
 	}
 
 	private function isIPCookieEnabled() {
-		return ($this->ip_cookie_mode === BVProtectFW_V636::IP_COOKIE_MODE_ENABLED);
+		return ($this->ip_cookie_mode === BVProtectFW_V639::IP_COOKIE_MODE_ENABLED);
 	}
 
 	private function isRequestProfilingDisabled() {
-		return ($this->request_profiling_mode === BVProtectFW_V636::REQ_PROFILING_MODE_DISABLED);
+		return ($this->request_profiling_mode === BVProtectFW_V639::REQ_PROFILING_MODE_DISABLED);
 	}
 
 	private function isRequestProfilingModeDebug() {
-		return ($this->request_profiling_mode === BVProtectFW_V636::REQ_PROFILING_MODE_DEBUG);
+		return ($this->request_profiling_mode === BVProtectFW_V639::REQ_PROFILING_MODE_DEBUG);
 	}
 
 	private function isRequestHasValidBypassCookie() {
 		if (!isset($this->has_valid_bypass_cookie)) {
-			$cookie = (string) $this->request->getCookies(BVProtectFW_V636::BYPASS_COOKIE_NAME);
+			$cookie = (string) $this->request->getCookies(BVProtectFW_V639::BYPASS_COOKIE_NAME);
 			$new_cookie = $this->generateBypassCookie();
 			$is_valid = ($this->isAdminCookieEnabled() && $new_cookie && ($cookie === $new_cookie));
 			$this->has_valid_bypass_cookie = $is_valid;
@@ -338,15 +338,15 @@ class BVProtectFW_V636 {
 	}
 
 	private function isRulesModeProtect() {
-		return ($this->rules_mode === BVProtectFW_V636::RULES_MODE_PROTECT);
+		return ($this->rules_mode === BVProtectFW_V639::RULES_MODE_PROTECT);
 	}
 
 	public function isLoggingModeComplete() {
-		return ($this->logging_mode === BVProtectFW_V636::LOGGING_MODE_COMPLETE);
+		return ($this->logging_mode === BVProtectFW_V639::LOGGING_MODE_COMPLETE);
 	}
 
 	public function isLoggingModeVisitor() {
-		return ($this->logging_mode === BVProtectFW_V636::LOGGING_MODE_VISITOR);
+		return ($this->logging_mode === BVProtectFW_V639::LOGGING_MODE_VISITOR);
 	}
 
 	public function isGeoBlockingEnabled() {
@@ -354,11 +354,11 @@ class BVProtectFW_V636 {
 	}
 
 	private function isWPFRuleInitModePrepend() {
-		return ($this->wpf_rule_init_mode === BVProtectFW_V636::WPF_RULE_INIT_MODE_PREPEND);
+		return ($this->wpf_rule_init_mode === BVProtectFW_V639::WPF_RULE_INIT_MODE_PREPEND);
 	}
 
 	private function isWPFRuleInitModeWP() {
-		return ($this->wpf_rule_init_mode === BVProtectFW_V636::WPF_RULE_INIT_MODE_WP);
+		return ($this->wpf_rule_init_mode === BVProtectFW_V639::WPF_RULE_INIT_MODE_WP);
 	}
 
 	private function canInitWPFRules() {
@@ -387,16 +387,16 @@ class BVProtectFW_V636 {
 			$current_wp_user = $this->getCurrentWPUser();
 
 			if (!$current_wp_user->isIdentical($this->request->wp_user)) {
-				$serialized_wp_user = BVProtectWPUser_V636::_serialize($current_wp_user);
+				$serialized_wp_user = BVProtectWPUser_V639::_serialize($current_wp_user);
 				$cookie_val = $serialized_wp_user . '_' .
-					BVProtectUtils_V636::signMessage($serialized_wp_user, $this->cookie_key);
+					BVProtectUtils_V639::signMessage($serialized_wp_user, $this->cookie_key);
 				$cookie_val = base64_encode($cookie_val);
 
-				$this->setCookie(BVProtectWPUser_V636::COOKIE_NAME, $cookie_val);
+				$this->setCookie(BVProtectWPUser_V639::COOKIE_NAME, $cookie_val);
 			}
 		} elseif ($this->request->wp_user->isLoggedIn()) {
-			$this->request->wp_user = BVProtectWPUser_V636::defaultUser();
-			$this->unsetCookie(BVProtectWPUser_V636::COOKIE_NAME);
+			$this->request->wp_user = BVProtectWPUser_V639::defaultUser();
+			$this->unsetCookie(BVProtectWPUser_V639::COOKIE_NAME);
 		}
 	}
 
@@ -413,7 +413,7 @@ class BVProtectFW_V636 {
 			$capabilities = $this->getCurrentWPUserCapabilities();
 		}
 
-		return (new BVProtectWPUser_V636($id, $role_level, $capabilities, $time));
+		return (new BVProtectWPUser_V639($id, $role_level, $capabilities, $time));
 	}
 
 	private function getCurrentWPUserCapabilities() {
@@ -432,9 +432,9 @@ class BVProtectFW_V636 {
 	}
 
 	private function loadWPUser() {
-		$this->request->wp_user = BVProtectWPUser_V636::defaultUser();
+		$this->request->wp_user = BVProtectWPUser_V639::defaultUser();
 
-		$cookie_val = $this->request->getCookies(BVProtectWPUser_V636::COOKIE_NAME);
+		$cookie_val = $this->request->getCookies(BVProtectWPUser_V639::COOKIE_NAME);
 		if (!is_string($cookie_val)) {
 			return;
 		}
@@ -450,8 +450,8 @@ class BVProtectFW_V636 {
 		}
 		list($serialized_user, $signature) = $cookie_val_array;
 
-		if (BVProtectUtils_V636::verifyMessage($serialized_user, $signature, $this->cookie_key) === true) {
-			$wp_user = BVProtectWPUser_V636::_unserialize($serialized_user);
+		if (BVProtectUtils_V639::verifyMessage($serialized_user, $signature, $this->cookie_key) === true) {
+			$wp_user = BVProtectWPUser_V639::_unserialize($serialized_user);
 
 			if (!isset($wp_user) || $wp_user->time !== (int) floor(time() / $this->cookie_validity)) {
 				return;
@@ -466,8 +466,8 @@ class BVProtectFW_V636 {
 				}
 			}
 
-			$role_by_level = array_flip(array_merge(BVProtectFW_V636::DEFAULT_WP_USER_ROLE_LEVELS,
-					BVProtectFW_V636::EXTRA_WP_USER_ROLE_LEVELS));
+			$role_by_level = array_flip(array_merge(BVProtectFW_V639::DEFAULT_WP_USER_ROLE_LEVELS,
+					BVProtectFW_V639::EXTRA_WP_USER_ROLE_LEVELS));
 			$this->request->wp_user->role = $role_by_level[$this->request->wp_user->role_level];
 		}
 	}
@@ -491,9 +491,9 @@ class BVProtectFW_V636 {
 
 		if ($this->isPrependMode()) {
 			$rules_file = MCDATAPATH . MCCONFKEY . '-' . 'mc_rules.json';
-			$rule_arrays = BVProtectUtils_V636::parseFile($rules_file);
+			$rule_arrays = BVProtectUtils_V639::parseFile($rules_file);
 		} else {
-			$rule_arrays = BVProtect_V636::$settings->getOption('bvruleset');
+			$rule_arrays = BVProtect_V639::$settings->getOption('bvruleset');
 			if(!is_array($rule_arrays)) {
 				$rule_arrays = array();
 			}
@@ -505,7 +505,7 @@ class BVProtectFW_V636 {
 		}
 
 		foreach($rule_arrays as $rule_array) {
-			$rule = BVProtectFWRule_V636::init($rule_array);
+			$rule = BVProtectFWRule_V639::init($rule_array);
 
 			if ($rule) {
 				if (!$this->is_rule_initialized && $rule->isExeOnBoot()) {
@@ -576,7 +576,7 @@ class BVProtectFW_V636 {
 					add_filter($hook_name, $callback, -9999999, $accepted_args);
 				}
 			} else {
-				BVProtectUtils_V636::preInitWPHook($hook_name, $callback, -9999999, $accepted_args);
+				BVProtectUtils_V639::preInitWPHook($hook_name, $callback, -9999999, $accepted_args);
 			}
 		}
 
@@ -943,12 +943,12 @@ class BVProtectFW_V636 {
 
 	private function setIPCookie() {
 		if (!$this->is_ip_cookie_set && $this->isIPCookieEnabled() &&
-				!$this->request->getCookies(BVProtectFW_V636::IP_COOKIE_NAME)) {
+				!$this->request->getCookies(BVProtectFW_V639::IP_COOKIE_NAME)) {
 
 			$time = floor(time() / 86400);
 			$cookie = hash('sha256', $this->request->ip . $time . $this->cookie_key);
 			if ($cookie) {
-				$this->setCookie(BVProtectFW_V636::IP_COOKIE_NAME, $cookie, time() + 86400);
+				$this->setCookie(BVProtectFW_V639::IP_COOKIE_NAME, $cookie, time() + 86400);
 			}
 		}
 	}
@@ -956,16 +956,16 @@ class BVProtectFW_V636 {
 	private function getCurrentWPUserRoleLevel() {
 		if (function_exists('current_user_can')) {
 			if (function_exists('is_super_admin') &&  is_super_admin()) {
-				return BVProtectFW_V636::WP_USER_ROLE_LEVEL_ADMIN;
+				return BVProtectFW_V639::WP_USER_ROLE_LEVEL_ADMIN;
 			}
 
 			foreach ($this->custom_roles as $role) {
 				if (current_user_can($role)) {
-					return BVProtectFW_V636::WP_USER_ROLE_LEVEL_CUSTOM;
+					return BVProtectFW_V639::WP_USER_ROLE_LEVEL_CUSTOM;
 				}
 			}
 
-			foreach (BVProtectFW_V636::DEFAULT_WP_USER_ROLE_LEVELS as $role => $level) {
+			foreach (BVProtectFW_V639::DEFAULT_WP_USER_ROLE_LEVELS as $role => $level) {
 				if (current_user_can($role)) {
 					return $level;
 				}
@@ -1073,9 +1073,9 @@ class BVProtectFW_V636 {
 	private function getBVCookies() {
 		$cookies = array();
 
-		if ($this->request->getCookies(BVProtectFW_V636::IP_COOKIE_NAME) !== NULL) {
-			$cookie_val = (string) $this->request->getCookies(BVProtectFW_V636::IP_COOKIE_NAME);
-			$cookies[BVProtectFW_V636::IP_COOKIE_NAME] = $cookie_val;
+		if ($this->request->getCookies(BVProtectFW_V639::IP_COOKIE_NAME) !== NULL) {
+			$cookie_val = (string) $this->request->getCookies(BVProtectFW_V639::IP_COOKIE_NAME);
+			$cookies[BVProtectFW_V639::IP_COOKIE_NAME] = $cookie_val;
 		}
 
 		return $cookies;
@@ -1233,7 +1233,7 @@ class BVProtectFW_V636 {
 	}
 
 	private function getUserBy($attribute, $value) {
-		if (isset($value) && function_exists('get_user_by') && BVProtectUtils_V636::havePluginsLoaded()) {
+		if (isset($value) && function_exists('get_user_by') && BVProtectUtils_V639::havePluginsLoaded()) {
 			return get_user_by($attribute, $value);
 		}
 	}
@@ -1337,7 +1337,7 @@ class BVProtectFW_V636 {
 						$profiled_data[$key]["file"] = true;
 					}
 
-					if ($this->matchCount(BVProtectFWRule_V636::SQLIREGEX, $value) > 2) {
+					if ($this->matchCount(BVProtectFWRule_V639::SQLIREGEX, $value) > 2) {
 						$profiled_data[$key]["sql"] = true;
 					}
 
@@ -1416,13 +1416,13 @@ class BVProtectFW_V636 {
 
 	private function canRequestBypassFirewall() {
 		if ($this->isRequestIPWhitelisted() || $this->isRequestHasValidBypassCookie()) {
-			$this->request->category = BVProtectRequest_V636::CATEGORY_WHITELISTED;
-			$this->request->status = BVProtectRequest_V636::STATUS_BYPASSED;
+			$this->request->category = BVProtectRequest_V639::CATEGORY_WHITELISTED;
+			$this->request->status = BVProtectRequest_V639::STATUS_BYPASSED;
 
 			return true;
-		} elseif (BVProtectUtils_V636::isPrivateIP($this->request->ip)) {
-			$this->request->category = BVProtectRequest_V636::CATEGORY_PRIVATEIP;
-			$this->request->status = BVProtectRequest_V636::STATUS_BYPASSED;
+		} elseif (BVProtectUtils_V639::isPrivateIP($this->request->ip)) {
+			$this->request->category = BVProtectRequest_V639::CATEGORY_PRIVATEIP;
+			$this->request->status = BVProtectRequest_V639::STATUS_BYPASSED;
 
 			return true;
 		}
@@ -1456,7 +1456,7 @@ class BVProtectFW_V636 {
 				$_engine_vars = array_merge($_engine_vars, $rule->opts['variables']);
 			}
 
-			$rule_engine = new BVProtectFWRuleEngine_V636($this->request, $_engine_vars);
+			$rule_engine = new BVProtectFWRuleEngine_V639($this->request, $_engine_vars);
 
 			if ($rule_engine->evaluate($rule) && !$rule_engine->hasError()) {
 				if (!empty($log_data)) {
@@ -1469,11 +1469,11 @@ class BVProtectFW_V636 {
 					switch ($action["type"]) {
 					case "ALLOW":
 						$this->break_rule_matching = true;
-						$this->request->category = BVProtectRequest_V636::CATEGORY_RULE_ALLOWED;
+						$this->request->category = BVProtectRequest_V639::CATEGORY_RULE_ALLOWED;
 						return;
 					case "BLOCK":
 						if ($this->isModeProtect()) {
-							$this->terminateRequest(BVProtectRequest_V636::CATEGORY_RULE_BLOCKED);
+							$this->terminateRequest(BVProtectRequest_V639::CATEGORY_RULE_BLOCKED);
 						}
 						return;
 					case "INSPECT":
@@ -1489,13 +1489,13 @@ class BVProtectFW_V636 {
 
 	private function terminateRequest($category) {
 		$this->request->category = $category;
-		$this->request->status = BVProtectRequest_V636::STATUS_BLOCKED;
+		$this->request->status = BVProtectRequest_V639::STATUS_BLOCKED;
 		$this->request->setRespCode(403);
 
 		if ($this->can_set_cache_prevention_cookie &&
-			!$this->request->getCookies(BVProtectFW_V636::PREVENT_CACHE_COOKIE_NAME)) {
+			!$this->request->getCookies(BVProtectFW_V639::PREVENT_CACHE_COOKIE_NAME)) {
 			$value = "Prevent Caching Response.";
-			$this->setCookie(BVProtectFW_V636::PREVENT_CACHE_COOKIE_NAME, $value, time() + 43200);
+			$this->setCookie(BVProtectFW_V639::PREVENT_CACHE_COOKIE_NAME, $value, time() + 43200);
 		}
 
 		header("Cache-Control: no-cache, no-store, must-revalidate");
@@ -1523,7 +1523,7 @@ class BVProtectFW_V636 {
 			if ($role_level >= $this->bypass_level) {
 				$cookie = $this->generateBypassCookie();
 				if ($cookie) {
-					$this->setCookie(BVProtectFW_V636::BYPASS_COOKIE_NAME, $cookie);
+					$this->setCookie(BVProtectFW_V639::BYPASS_COOKIE_NAME, $cookie);
 				}
 			}
 		}

@@ -7,7 +7,7 @@ class BVManageCallback extends BVCallbackBase {
 	public $skin;
 	public $bvinfo;
 
-	const MANAGE_WING_VERSION = 1.7;
+	const MANAGE_WING_VERSION = 1.8;
 
 	public function __construct($callback_handler) {
 		$this->settings = $callback_handler->settings;
@@ -34,20 +34,29 @@ class BVManageCallback extends BVCallbackBase {
 		}
 	}
 
+	/**
+	 * Load a file with require_once only if it exists, so missing files don't fatal the script.
+	 */
+	function safe_require_once($path) {
+		if ($path && file_exists($path)) {
+			require_once $path;
+		}
+	}
+
 	function include_files() {
-		@include_once ABSPATH.'wp-admin/includes/file.php';
-		@include_once ABSPATH.'wp-admin/includes/plugin.php';
-		@include_once ABSPATH.'wp-admin/includes/theme.php';
-		@include_once ABSPATH.'wp-admin/includes/misc.php';
-		@include_once ABSPATH.'wp-admin/includes/template.php';
-		@include_once ABSPATH.'wp-includes/pluggable.php';
-		@include_once ABSPATH.'wp-admin/includes/class-wp-upgrader.php';
-		@include_once ABSPATH.'wp-admin/includes/class-theme-upgrader.php';
-		@include_once ABSPATH.'wp-admin/includes/class-plugin-upgrader.php';
-		@include_once ABSPATH.'wp-admin/includes/user.php';
-		@include_once ABSPATH.'wp-admin/includes/upgrade.php';
-		@include_once ABSPATH.'wp-admin/includes/update.php';
-		@require_once ABSPATH.'wp-admin/includes/update-core.php';
+		$this->safe_require_once(ABSPATH.'wp-admin/includes/file.php');
+		$this->safe_require_once(ABSPATH.'wp-admin/includes/plugin.php');
+		$this->safe_require_once(ABSPATH.'wp-admin/includes/theme.php');
+		$this->safe_require_once(ABSPATH.'wp-admin/includes/misc.php');
+		$this->safe_require_once(ABSPATH.'wp-admin/includes/template.php');
+		$this->safe_require_once(ABSPATH.'wp-includes/pluggable.php');
+		$this->safe_require_once(ABSPATH.'wp-admin/includes/class-wp-upgrader.php');
+		$this->safe_require_once(ABSPATH.'wp-admin/includes/class-theme-upgrader.php');
+		$this->safe_require_once(ABSPATH.'wp-admin/includes/class-plugin-upgrader.php');
+		$this->safe_require_once(ABSPATH.'wp-admin/includes/user.php');
+		$this->safe_require_once(ABSPATH.'wp-admin/includes/upgrade.php');
+		$this->safe_require_once(ABSPATH.'wp-admin/includes/update.php');
+		$this->safe_require_once(ABSPATH.'wp-admin/includes/update-core.php');
 	}
 
 	function edit($args) {

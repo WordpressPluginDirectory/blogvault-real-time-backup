@@ -65,6 +65,7 @@ class BVWPAdmin {
 				BVHelper::safePregMatch("/bv_account_details$/", $hook)) {
 			wp_enqueue_style( 'bootstrap', plugins_url('css/bootstrap.min.css', __FILE__), array(), $this->bvinfo->version);
 			wp_enqueue_style( 'bvplugin', plugins_url('css/bvplugin.min.css', __FILE__), array(), $this->bvinfo->version);
+			wp_enqueue_script( 'bv-connection-key', plugins_url('js/connection-key.js', __FILE__), array(), $this->bvinfo->version, true);
 		}
 	}
 

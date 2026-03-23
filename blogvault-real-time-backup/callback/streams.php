@@ -80,15 +80,18 @@ class BVRespStream extends BVStream {
 
 	function __construct($request) {
 		parent::__construct($request);
-		$this->bvboundry = $request->bvboundry;
+		// Restrict boundary to safe chars so raw echo cannot inject into response (XSS).
+		$raw = isset($request->bvboundry) ? (string) $request->bvboundry : '';
+		$sanitized = preg_replace('/[^a-zA-Z0-9_-]/', '', $raw);
+		$this->bvboundry = $sanitized !== '' ? $sanitized : 'bvstream';
 	}
 
 	public function writeChunk($chunk) {
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- chunk should not be escaped
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- bvboundry sanitized in constructor; raw stream protocol (not HTML), chunk must not be escaped or stream is corrupted
 		echo $this->bvboundry . "ckckckckck" . $chunk . $this->bvboundry . "ckckckckck";
 	}
 	public function endStream() {
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- bvboundry sanitized in constructor; raw stream protocol (not HTML)
 		echo $this->bvboundry . "rerererere";
 
 		return array();
