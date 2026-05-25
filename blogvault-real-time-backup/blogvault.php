@@ -5,7 +5,7 @@ Plugin URI: https://blogvault.net
 Description: Easiest way to backup & secure your WordPress site
 Author: Backup by BlogVault
 Author URI: https://blogvault.net
-Version: 6.39
+Version: 6.47
 Network: True
 License: GPLv2 or later
 License URI: [http://www.gnu.org/licenses/gpl-2.0.html](http://www.gnu.org/licenses/gpl-2.0.html)
@@ -171,14 +171,14 @@ if (BVHelper::getRawParam('REQUEST', 'bvplugname') == "bvbackup") {
 		if ($bvinfo->isProtectModuleEnabled()) {
 			require_once dirname( __FILE__ ) . '/protect/protect.php';
 			//For backward compatibility.
-			BVProtect_V639::$settings = new BVWPSettings();
-			BVProtect_V639::$db = new BVWPDb();
-			BVProtect_V639::$info = new BVInfo(BVProtect_V639::$settings);
+			BVProtect_V647::$settings = new BVWPSettings();
+			BVProtect_V647::$db = new BVWPDb();
+			BVProtect_V647::$info = new BVInfo(BVProtect_V647::$settings);
 
-			add_action('bv_clear_pt_config', array('BVProtect_V639', 'uninstall'));
+			add_action('bv_clear_pt_config', array('BVProtect_V647', 'uninstall'));
 
 			if ($bvinfo->isActivePlugin()) {
-				BVProtect_V639::init(BVProtect_V639::MODE_WP);
+				BVProtect_V647::init(BVProtect_V647::MODE_WP);
 			}
 		}
 
